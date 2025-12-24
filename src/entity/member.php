@@ -44,5 +44,15 @@ class Membre
         }
         $this->email = $email;
     }
+
+    // public function getDate()
 }
- 
+
+/*$showCase = new Membre("Aymane", "Dominantvortex@proton.me");
+//echo $showCase->getNom();
+
+$showCase->setEmail("LaksimiAyman@proton.me");
+$showCase->getEmail();
+echo $showCase->getEmail();
+echo ("\n");*/
+
