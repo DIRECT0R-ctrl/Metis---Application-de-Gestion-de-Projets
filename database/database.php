@@ -2,21 +2,31 @@
 
 class Database 
 {
-	private
-	private static $connection = null;
 
+	private static $host = 'localhost';
+	private static $dbname = 'metis';
+	private static $user = 'metis_user';
+	private static $password = 'metis123';
+
+	private static ?PDO $connection = null;
 	private function __construct()
 	{
-		throw new \Exception('Not implemented');
 	}
 
 	public static function connect() {
 		if (self::$connection === null) 
 		{
 			self::$connection = new PDO(
-				"psql:host=localhost;dbname=metis"
+				"pgsql:host=" . self::$host . ";dbname=" . self::$dbname,
+				 self::$user,
+				 self::$password,
+				
+				[
+					PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION
+				]
 			);
 		}
+		return self::$connection;
 	}
 }
 ?>
