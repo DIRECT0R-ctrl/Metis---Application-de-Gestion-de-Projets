@@ -1,7 +1,7 @@
 <?php
 
-require_once __DIR__ . '/../entity/Member.php';
-require_once __DIR__ . '/../../database/Database.php';
+require_once __DIR__ . '/../entity/member.php';
+require_once __DIR__ . '/../../database/database.php';
 
 class MemberRepository
 {
