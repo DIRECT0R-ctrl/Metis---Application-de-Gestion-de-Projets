@@ -26,5 +26,33 @@ class MemberRepository
             'created_at' => $member->getCreatedAt()->format('Y-m-d H:i:s')
         ]);
     }
-	
+    
+    public function findAll(): array
+    {
+        $stmt = $this->pdo->query("SELECT * FROM membres");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
+    public function delete(int $id): void
+    {
+        $stmt = $this->pdo->prepare(
+            "DELETE FROM membres
+             WHERE id = :id
+             AND id NOT IN (SELECT membre_id FROM projets)"
+        );
+
+        $stmt->execute(['id' => $id]);
+    }
+
+
+    public function emailExists(string $email): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) FROM membres WHERE email = :email"
+        );
+
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetchColumn() > 0;
+    }    
 }

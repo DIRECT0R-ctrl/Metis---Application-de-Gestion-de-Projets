@@ -28,3 +28,4 @@ abstract class Projet
     }
 }
 
+// $p = new projet("workspace", 5);
