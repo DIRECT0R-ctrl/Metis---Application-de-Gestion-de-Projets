@@ -1,6 +1,6 @@
 <?php
 
-class Membre
+class Member
 {
     private int $id;
     private string $nom;
@@ -45,10 +45,13 @@ class Membre
         $this->email = $email;
     }
 
-    // public function getDate()
+    public function getDate(): DateTime 
+    {
+	    return $this->createdAt;
+    }
 }
 
-$showCase = new Membre('aymane', 'dominantvortex@proton.me');
+/*$showCase = new Membre('aymane', 'dominantvortex@proton.me');
 $b = $showCase->getNom();
 echo ($b);
 
@@ -68,4 +71,4 @@ echo ($c);
 //echo $showCase->getEmail();
 
 echo ("\n");
-
+ */
