@@ -45,10 +45,10 @@ class Member
         $this->email = $email;
     }
 
-    public function getDate(): DateTime 
+    public function getCreatedAt(): DateTime
     {
-	    return $this->createdAt;
-    }
+    	return $this->createdAt;
+    } 
 }
 
 /*$showCase = new Membre('aymane', 'dominantvortex@proton.me');
