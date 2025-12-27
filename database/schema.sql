@@ -13,6 +13,8 @@ CREATE TABLE projets (
     type projet_type NOT NULL,
     date_debut TIMESTAMP NOT NULL,
     membre_id INT NOT NULL,
+    duree INT,
+    budget DECIMAL(10,2),
     CONSTRAINT fk_projet_membre
         FOREIGN KEY (membre_id)
         REFERENCES membres(id)
@@ -22,6 +24,7 @@ CREATE TABLE projets (
 CREATE TABLE activites (
     id SERIAL PRIMARY KEY,
     description TEXT NOT NULL,
+    statut VARCHAR(50) NOT NULL DEFAULT 'en cours',
     date_activite TIMESTAMP NOT NULL,
     projet_id INT NOT NULL,
     CONSTRAINT fk_activite_projet
