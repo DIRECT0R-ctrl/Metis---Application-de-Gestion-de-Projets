@@ -54,5 +54,34 @@ class MemberRepository
 
         $stmt->execute(['email' => $email]);
         return $stmt->fetchColumn() > 0;
-    }    
+    }
+
+    public function findById(int $id): ?array
+    {
+        $stmt = $this->pdo->prepare("SELECT * FROM membres WHERE id = :id");
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? $result : null;
+    }
+
+    public function update(int $id, string $nom, string $email): void
+    {
+        $stmt = $this->pdo->prepare(
+            "UPDATE membres SET nom = :nom, email = :email WHERE id = :id"
+        );
+        $stmt->execute([
+            'id' => $id,
+            'nom' => $nom,
+            'email' => $email
+        ]);
+    }
+
+    public function hasProjects(int $id): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) FROM projets WHERE membre_id = :id"
+        );
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetchColumn() > 0;
+    }
 }
