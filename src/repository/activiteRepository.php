@@ -97,4 +97,4 @@ class ActiviteRepository
             'statut' => $statut
         ]);
     }
-
+}
