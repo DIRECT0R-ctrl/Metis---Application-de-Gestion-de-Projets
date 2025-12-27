@@ -14,6 +14,16 @@ class ProjectRepository
         $this->pdo = Database::connect();
     }
 
+    private function columnExists(string $table, string $column): bool
+    {
+        $stmt = $this->pdo->prepare(
+            "SELECT COUNT(*) FROM information_schema.columns 
+             WHERE table_name = :table AND column_name = :column"
+        );
+        $stmt->execute(['table' => $table, 'column' => $column]);
+        return $stmt->fetchColumn() > 0;
+    }
+
     public function create(Projet $projet): void
     {
         $type = $projet->getType();
@@ -26,19 +36,35 @@ class ProjectRepository
             $budget = $projet->getBudget();
         }
 
-        $stmt = $this->pdo->prepare(
-            "INSERT INTO projets (titre, type, date_debut, membre_id, duree, budget)
-             VALUES (:titre, :type, :date, :membre, :duree, :budget)"
-        );
+        $hasDuree = $this->columnExists('projets', 'duree');
+        $hasBudget = $this->columnExists('projets', 'budget');
 
-        $stmt->execute([
+        $columns = ['titre', 'type', 'date_debut', 'membre_id'];
+        $values = [':titre', ':type', ':date', ':membre'];
+        $params = [
             'titre' => $projet->getTitre(),
             'type' => $type,
             'date' => $projet->getDateDebut()->format('Y-m-d H:i:s'),
-            'membre' => $projet->getMembreId(),
-            'duree' => $duree,
-            'budget' => $budget
-        ]);
+            'membre' => $projet->getMembreId()
+        ];
+
+        if ($hasDuree) {
+            $columns[] = 'duree';
+            $values[] = ':duree';
+            $params['duree'] = $duree;
+        }
+
+        if ($hasBudget) {
+            $columns[] = 'budget';
+            $values[] = ':budget';
+            $params['budget'] = $budget;
+        }
+
+        $sql = "INSERT INTO projets (" . implode(', ', $columns) . ") 
+                VALUES (" . implode(', ', $values) . ")";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
     }
 
     public function findAll(): array
