@@ -17,5 +17,15 @@ class ProjetLong extends Projet
         }
         $this->budget = $budget;
     }
+
+    public function getBudget(): float
+    {
+        return $this->budget;
+    }
+
+    public function getType(): string
+    {
+        return 'long';
+    }
 }
 

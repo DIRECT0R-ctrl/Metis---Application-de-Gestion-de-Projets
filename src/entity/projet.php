@@ -26,6 +26,38 @@ abstract class Projet
         }
         $this->titre = $titre;
     }
+
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function getDateDebut(): DateTime
+    {
+        return $this->dateDebut;
+    }
+
+    public function setDateDebut(DateTime $dateDebut): void
+    {
+        $this->dateDebut = $dateDebut;
+    }
+
+    public function getMembreId(): int
+    {
+        return $this->membreId;
+    }
+
+    public function setMembreId(int $membreId): void
+    {
+        $this->membreId = $membreId;
+    }
+
+    abstract public function getType(): string;
 }
 
 // $p = new projet("workspace", 5);

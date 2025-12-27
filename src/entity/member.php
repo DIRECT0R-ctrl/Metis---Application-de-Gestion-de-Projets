@@ -48,7 +48,17 @@ class Member
     public function getCreatedAt(): DateTime
     {
     	return $this->createdAt;
-    } 
+    }
+
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
+    public function findById(int $id): ?Member
+    {
+        return null;
+    }
 }
 
 /*$showCase = new Membre('aymane', 'dominantvortex@proton.me');

@@ -17,5 +17,15 @@ class ProjetCourt extends Projet
         }
         $this->duree = $duree;
     }
+
+    public function getDuree(): int
+    {
+        return $this->duree;
+    }
+
+    public function getType(): string
+    {
+        return 'court';
+    }
 }
 
