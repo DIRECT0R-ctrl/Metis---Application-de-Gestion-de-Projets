@@ -12,25 +12,50 @@ class ActiviteRepository
         $this->pdo = Database::connect();
     }
 
-    public function create(Activite $activite): void
+    private function columnExists(string $table, string $column): bool
     {
         $stmt = $this->pdo->prepare(
-            "INSERT INTO activites (description, statut, date_activite, projet_id)
-             VALUES (:description, :statut, :date, :projet_id)"
+            "SELECT COUNT(*) FROM information_schema.columns 
+             WHERE table_name = :table AND column_name = :column"
         );
+        $stmt->execute(['table' => $table, 'column' => $column]);
+        return $stmt->fetchColumn() > 0;
+    }
 
-        $stmt->execute([
+    public function create(Activite $activite): void
+    {
+        $hasStatut = $this->columnExists('activites', 'statut');
+        $dateColumn = $this->columnExists('activites', 'date_activite') ? 'date_activite' : 'date';
+
+        $columns = ['description', 'projet_id'];
+        $values = [':description', ':projet_id'];
+        $params = [
             'description' => $activite->getDescription(),
-            'statut' => $activite->getStatut(),
-            'date' => $activite->getDate()->format('Y-m-d H:i:s'),
             'projet_id' => $activite->getProjetId()
-        ]);
+        ];
+
+        if ($hasStatut) {
+            $columns[] = 'statut';
+            $values[] = ':statut';
+            $params['statut'] = $activite->getStatut();
+        }
+
+        $columns[] = $dateColumn;
+        $values[] = ':date';
+        $params['date'] = $activite->getDate()->format('Y-m-d H:i:s');
+
+        $sql = "INSERT INTO activites (" . implode(', ', $columns) . ") 
+                VALUES (" . implode(', ', $values) . ")";
+
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute($params);
     }
 
     
     public function findAll(): array
     {
-        $stmt = $this->pdo->query("SELECT * FROM activites ORDER BY date_activite DESC");
+        $dateColumn = $this->columnExists('activites', 'date_activite') ? 'date_activite' : 'date';
+        $stmt = $this->pdo->query("SELECT * FROM activites ORDER BY $dateColumn DESC");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 

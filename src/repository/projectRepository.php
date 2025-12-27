@@ -92,9 +92,17 @@ class ProjectRepository
 
     public function hasActiveActivities(int $id): bool
     {
-        $stmt = $this->pdo->prepare(
-            "SELECT COUNT(*) FROM activites WHERE projet_id = :id AND statut = 'en cours'"
-        );
+        $hasStatut = $this->columnExists('activites', 'statut');
+        
+        if ($hasStatut) {
+            $stmt = $this->pdo->prepare(
+                "SELECT COUNT(*) FROM activites WHERE projet_id = :id AND statut = 'en cours'"
+            );
+        } else {
+            $stmt = $this->pdo->prepare(
+                "SELECT COUNT(*) FROM activites WHERE projet_id = :id"
+            );
+        }
         $stmt->execute(['id' => $id]);
         return $stmt->fetchColumn() > 0;
     }
