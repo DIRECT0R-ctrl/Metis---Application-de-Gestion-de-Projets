@@ -59,5 +59,3 @@ abstract class Projet
 
     abstract public function getType(): string;
 }
-
-// $p = new projet("workspace", 5);

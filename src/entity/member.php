@@ -54,31 +54,4 @@ class Member
     {
         $this->id = $id;
     }
-
-    public function findById(int $id): ?Member
-    {
-        return null;
-    }
 }
-
-/*$showCase = new Membre('aymane', 'dominantvortex@proton.me');
-$b = $showCase->getNom();
-echo ($b);
-
-echo ("\n");
-$showCase->setNom('noufal');
-$c = $showCase->getNom();
-
-echo ($c);
-
-
-//echo $showCase->getNom();
-
-//$showCase->setEmail("LaksimiAyman@proton.me");
-//$showCase->getEmail();
-//echo $showCase->getEmail();
-//$showCase->setEmail("oldman@proton.me"); // chnage 
-//echo $showCase->getEmail();
-
-echo ("\n");
- */
